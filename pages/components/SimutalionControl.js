@@ -1,15 +1,14 @@
-// pages/components/SimulationControl.js
 import React from "react";
-import { Button } from "react-bootstrap"; // Importa o componente Button do Bootstrap
+import { Button } from "react-bootstrap";
 
 function SimulationControl({ onStart }) {
-  return (
-    <div className="mb-3">
-      <Button variant="primary" onClick={onStart} style={{ width: '100%' }}>
-        Start Simulation
-      </Button>
+return (
+    <div className="mb-4 p-3">
+    <Button variant="success" onClick={onStart} className="btn-block">
+        Iniciar Simulação
+    </Button>
     </div>
-  );
+);
 }
 
 export default SimulationControl;

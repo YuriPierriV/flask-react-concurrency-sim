@@ -1,16 +1,13 @@
-// pages/components/SimulationResults.js
 import React from "react";
 
 function SimulationResults({ results }) {
 return (
-    <div className="mb-3">
-    <h2>Resultados</h2>
+    <div className="mb-4 p-3 border rounded shadow-sm">
+    <h2 className="text-primary">Resultados da Simulação</h2>
     {results ? (
-        <div className="alert alert-info" role="alert">
-        {JSON.stringify(results)}
-        </div>
+        <pre>{JSON.stringify(results, null, 2)}</pre>
     ) : (
-        <p>Nenhum resultado disponível.</p>
+        <p>Inicie uma simulação para ver os resultados.</p>
     )}
     </div>
 );

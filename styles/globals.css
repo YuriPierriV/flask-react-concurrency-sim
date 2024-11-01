@@ -7,11 +7,11 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f6f9;
-  color: #333;
+  font-family: 'Roboto', sans-serif; /* Define a fonte padrão */
+  background-color: #f8f9fa; /* Cor de fundo suave */
+  color: #343a40; /* Cor do texto */
   margin: 0;
-  padding: 0;
+  padding: 20px;
 }
 
 .App {
@@ -25,6 +25,7 @@ h1 {
   color: #4a90e2;
   font-size: 2.5rem;
   margin-bottom: 20px;
+  text-align: center; /* Centraliza o título */
 }
 
 .config-container,
@@ -79,4 +80,3 @@ pre {
   overflow-x: auto;
   color: #555;
 }
-

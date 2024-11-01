@@ -22,23 +22,22 @@ function Index() {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("Resposta da rede não foi ok");
       }
 
       const data = await response.json();
       setResults(data);
     } catch (error) {
-      console.error("Error starting simulation:", error);
+      console.error("Erro ao iniciar a simulação:", error);
     }
   };
 
   return (
     <div className="container">
-      <h1 className="text-center mt-4">Concurrency Simulator</h1>
+      <h1 className="text-primary text-center mt-4">Simulador de Concorrência</h1>
       <div className="row">
         <div className="col-md-6">
           <SimulationConfig config={config} setConfig={setConfig} />
-          <SimulationControl onStart={handleStartSimulation} />
         </div>
         <div className="col-md-6">
           <SimulationResults results={results} />
