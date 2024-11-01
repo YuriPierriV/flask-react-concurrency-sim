@@ -1,4 +1,4 @@
-# Clock Lamport
+# FlaskReactConcurrency
 
 Este é o projeto "Clock Lamport", desenvolvido para simular e visualizar conceitos de sistemas distribuídos usando o algoritmo de relógio de Lamport. O projeto usa **Next.js** para a interface e conta com várias dependências para visualização e gerenciamento de estados, incluindo **React**, **React-vis**, e **Axios**. O projeto também depende de um ambiente Docker para rodar serviços.
 
