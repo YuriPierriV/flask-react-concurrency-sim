@@ -3,20 +3,13 @@ import io from "socket.io-client";
 
 const socket = io("https://flaskconcurrency.onrender.com");
 
-
 const Square = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isMoving, setIsMoving] = useState(false);
   const [canMove, setCanMove] = useState(true);
 
   useEffect(() => {
-    // Centraliza o quadrado na montagem do componente
-    setPosition({
-      x: window.innerWidth / 2 - 25, // 50 / 2
-      y: window.innerHeight / 2 - 25, // 50 / 2
-    });
-
-    // Recebe atualização de posição de outros usuários
+    // Recebe atualização de posição inicial e status de outros usuários
     socket.on("update_square", (data) => {
       setPosition({ x: data.x, y: data.y });
       setCanMove(!data.in_use);
@@ -70,8 +63,8 @@ const Square = () => {
 
   return (
     <div
-      onMouseDown={startMove}
-      onTouchStart={startMove} // Evento de toque
+      onMouseDown={(e) => canMove && startMove(e)}
+      onTouchStart={(e) => canMove && startMove(e)} // Evento de toque
       onMouseUp={endMove}
       onTouchEnd={endMove} // Evento de toque
       style={{
@@ -81,7 +74,7 @@ const Square = () => {
         position: "absolute",
         left: position.x,
         top: position.y,
-        cursor: canMove ? "pointer" : "not-allowed",
+        cursor: "pointer",
         touchAction: "none", // Impede a rolagem ao tocar no quadrado
       }}
     />
