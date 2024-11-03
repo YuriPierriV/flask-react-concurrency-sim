@@ -34,8 +34,10 @@ const Square = () => {
 
   const moveSquare = (e) => {
     if (isMoving) {
-      const newX = e.clientX - 25; // Centraliza o quadrado
-      const newY = e.clientY - 25; // Centraliza o quadrado
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX); // Suporte a touch
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY); // Suporte a touch
+      const newX = clientX - 25; // Centraliza o quadrado
+      const newY = clientY - 25; // Centraliza o quadrado
       setPosition({ x: newX, y: newY });
       socket.emit("move_square", { x: newX, y: newY });
     }
@@ -46,26 +48,31 @@ const Square = () => {
     setIsMoving(false);
   };
 
-  // Adiciona e remove ouvintes de evento para o movimento do mouse
+  // Adiciona e remove ouvintes de evento para o movimento do mouse e toque
   useEffect(() => {
     if (isMoving) {
-      // Adiciona o ouvinte de movimento do mouse no documento
+      // Adiciona o ouvinte de movimento do mouse e toque no documento
       window.addEventListener("mousemove", moveSquare);
+      window.addEventListener("touchmove", moveSquare, { passive: false });
     } else {
-      // Remove o ouvinte quando não estiver mais movendo
+      // Remove os ouvintes quando não estiver mais movendo
       window.removeEventListener("mousemove", moveSquare);
+      window.removeEventListener("touchmove", moveSquare);
     }
 
     // Limpeza ao desmontar
     return () => {
       window.removeEventListener("mousemove", moveSquare);
+      window.removeEventListener("touchmove", moveSquare);
     };
   }, [isMoving]); // Dependência para verificar se está se movendo
 
   return (
     <div
       onMouseDown={startMove}
+      onTouchStart={startMove} // Evento de toque
       onMouseUp={endMove}
+      onTouchEnd={endMove} // Evento de toque
       style={{
         width: 50,
         height: 50,
@@ -74,6 +81,7 @@ const Square = () => {
         left: position.x,
         top: position.y,
         cursor: canMove ? "pointer" : "not-allowed",
+        touchAction: "none", // Impede a rolagem ao tocar no quadrado
       }}
     />
   );
