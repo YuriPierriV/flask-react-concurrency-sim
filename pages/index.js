@@ -1,52 +1,61 @@
-import React, { useState } from "react";
-import SimulationConfig from "pages/components/SimulationConfig";
-import SimulationControl from "pages/components/SimutalionControl";
-import SimulationResults from "pages/components/SimulationResults";
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
 
-function Index() {
-  const [config, setConfig] = useState({
-    threadCount: 5,
-    modelType: "sharedMemory",
-    lockType: "mutex",
-  });
-  const [results, setResults] = useState(null);
+const socket = io("http://localhost:5000"); // URL do backend Flask
 
-  const handleStartSimulation = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/start-simulation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(config),
-      });
+const Square = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isMoving, setIsMoving] = useState(false);
+  const [canMove, setCanMove] = useState(true);
 
-      if (!response.ok) {
-        throw new Error("Resposta da rede não foi ok");
-      }
+  useEffect(() => {
+    // Recebe atualização de posição de outros usuários
+    socket.on("update_square", (data) => {
+      setPosition({ x: data.x, y: data.y });
+      setCanMove(!data.in_use);
+    });
 
-      const data = await response.json();
-      setResults(data);
-    } catch (error) {
-      console.error("Erro ao iniciar a simulação:", error);
+    // Limpa o WebSocket ao desmontar
+    return () => {
+      socket.off("update_square");
+    };
+  }, []);
+
+  const startMove = () => {
+    socket.emit("start_move");
+    setIsMoving(true);
+  };
+
+  const moveSquare = (e) => {
+    if (isMoving) {
+      const newX = e.clientX - 25; // Centraliza o quadrado (ajuste conforme o tamanho)
+      const newY = e.clientY - 25; // Centraliza o quadrado (ajuste conforme o tamanho)
+      setPosition({ x: newX, y: newY });
+      socket.emit("move_square", { x: newX, y: newY });
     }
   };
 
-  return (
-    <div className="container">
-      <h1 className="text-primary text-center mt-4">
-        Simulador de Concorrência
-      </h1>
-      <div className="row">
-        <div className="col-md-6">
-          <SimulationConfig config={config} setConfig={setConfig} />
-        </div>
-        <div className="col-md-6">
-          <SimulationResults results={results} />
-        </div>
-      </div>
-    </div>
-  );
-}
+  const endMove = () => {
+    socket.emit("end_move");
+    setIsMoving(false);
+  };
 
-export default Index;
+  return (
+    <div
+      onMouseDown={startMove}
+      onMouseMove={moveSquare}
+      onMouseUp={endMove}
+      style={{
+        width: 50,
+        height: 50,
+        backgroundColor: "blue",
+        position: "absolute",
+        left: position.x,
+        top: position.y,
+        cursor: canMove ? "pointer" : "not-allowed",
+      }}
+    />
+  );
+};
+
+export default Square;
