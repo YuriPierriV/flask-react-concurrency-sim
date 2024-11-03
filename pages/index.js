@@ -9,6 +9,12 @@ const Square = () => {
   const [canMove, setCanMove] = useState(true);
 
   useEffect(() => {
+    // Centraliza o quadrado na montagem do componente
+    setPosition({
+      x: window.innerWidth / 2 - 25, // 50 / 2
+      y: window.innerHeight / 2 - 25, // 50 / 2
+    });
+
     // Recebe atualização de posição de outros usuários
     socket.on("update_square", (data) => {
       setPosition({ x: data.x, y: data.y });
@@ -28,8 +34,8 @@ const Square = () => {
 
   const moveSquare = (e) => {
     if (isMoving) {
-      const newX = e.clientX - 25; // Centraliza o quadrado (ajuste conforme o tamanho)
-      const newY = e.clientY - 25; // Centraliza o quadrado (ajuste conforme o tamanho)
+      const newX = e.clientX - 25; // Centraliza o quadrado
+      const newY = e.clientY - 25; // Centraliza o quadrado
       setPosition({ x: newX, y: newY });
       socket.emit("move_square", { x: newX, y: newY });
     }
