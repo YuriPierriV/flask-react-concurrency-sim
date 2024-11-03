@@ -1,10 +1,14 @@
 # FlaskReactConcurrency
 
-Este é o projeto "FlaskReactConcurrency", desenvolvido para simular e visualizar conceitos de sistemas distribuídos usando o algoritmo de relógio de Lamport. O projeto usa **Next.js** para a interface e conta com várias dependências para visualização e gerenciamento de estados, incluindo **React** e **React-vis**. O projeto também depende de um ambiente Docker para rodar serviços.
+Este é o projeto **FlaskReactConcurrency**, desenvolvido para simular um ambiente de concorrência visual onde múltiplos usuários podem visualizar e interagir com o movimento de um quadrado em tempo real. O backend é implementado em Flask, com comunicação via WebSocket, e o frontend é desenvolvido em React, proporcionando uma interface interativa.
+
+## Descrição do Projeto
+
+O objetivo deste projeto é aplicar conceitos de concorrência em uma aplicação visual, onde apenas um usuário pode mover o quadrado na tela por vez, enquanto os demais observam o movimento em tempo real. Esse controle é gerenciado com travas e semáforos no backend para garantir que apenas um usuário por vez manipule o quadrado.
 
 ## Pré-requisitos
 
-Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
+Certifique-se de ter as seguintes ferramentas instaladas:
 
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
@@ -16,34 +20,9 @@ Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 Primeiro, clone o repositório para a sua máquina local:
 
 ```bash
-git clone https://github.com/YuriPierriV/clock-lamport.git
-cd clock-lamport
+git clone https://github.com/YuriPierriV/flask-react-concurrency.git
+cd flask-react-concurrency
 
-2. Instale as dependências
-
-Em seguida, instale as dependências do projeto com o npm:
-
-bash
-
-npm install
-
-3. Suba os serviços do Docker
-
-O projeto depende de alguns serviços que são configurados e gerenciados via Docker. Para iniciar os serviços, execute:
-
-bash
-
-npm run services:build
-
-4. Execute o projeto em modo de desenvolvimento
-
-Agora, para iniciar o servidor de desenvolvimento do Next.js, execute o comando:
-
-bash
-
-npm run dev
-
-A aplicação estará disponível em http://localhost:3000.
 Autores
 
 Este projeto foi desenvolvido por:
