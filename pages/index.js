@@ -4,18 +4,20 @@ import io from "socket.io-client";
 const socket = io("https://flaskconcurrency.onrender.com");
 
 const Square = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 50, y: 50 }); // Posição percentual inicial (meio da tela)
   const [isMoving, setIsMoving] = useState(false);
   const [canMove, setCanMove] = useState(true);
 
   useEffect(() => {
     // Recebe atualização de posição inicial e status de outros usuários
     socket.on("update_square", (data) => {
-      setPosition({ x: data.x, y: data.y });
+      // Converte porcentagem para pixels com base no tamanho atual da tela
+      const adjustedX = (data.x / 100) * window.innerWidth - 25;
+      const adjustedY = (data.y / 100) * window.innerHeight - 25;
+      setPosition({ x: adjustedX, y: adjustedY });
       setCanMove(!data.in_use);
     });
 
-    // Limpa o WebSocket ao desmontar
     return () => {
       socket.off("update_square");
     };
@@ -28,12 +30,16 @@ const Square = () => {
 
   const moveSquare = (e) => {
     if (isMoving) {
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX); // Suporte a touch
-      const clientY = e.clientY || (e.touches && e.touches[0].clientY); // Suporte a touch
-      const newX = clientX - 25; // Centraliza o quadrado
-      const newY = clientY - 25; // Centraliza o quadrado
-      setPosition({ x: newX, y: newY });
-      socket.emit("move_square", { x: newX, y: newY });
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+      // Calcula posição percentual
+      const xPercentage = (clientX / window.innerWidth) * 100;
+      const yPercentage = (clientY / window.innerHeight) * 100;
+
+      // Atualiza a posição em porcentagem
+      setPosition({ x: clientX - 25, y: clientY - 25 });
+      socket.emit("move_square", { x: xPercentage, y: yPercentage });
     }
   };
 
@@ -42,31 +48,26 @@ const Square = () => {
     setIsMoving(false);
   };
 
-  // Adiciona e remove ouvintes de evento para o movimento do mouse e toque
   useEffect(() => {
     if (isMoving) {
-      // Adiciona o ouvinte de movimento do mouse e toque no documento
       window.addEventListener("mousemove", moveSquare);
       window.addEventListener("touchmove", moveSquare, { passive: false });
     } else {
-      // Remove os ouvintes quando não estiver mais movendo
       window.removeEventListener("mousemove", moveSquare);
       window.removeEventListener("touchmove", moveSquare);
     }
-
-    // Limpeza ao desmontar
     return () => {
       window.removeEventListener("mousemove", moveSquare);
       window.removeEventListener("touchmove", moveSquare);
     };
-  }, [isMoving]); // Dependência para verificar se está se movendo
+  }, [isMoving]);
 
   return (
     <div
       onMouseDown={(e) => canMove && startMove(e)}
-      onTouchStart={(e) => canMove && startMove(e)} // Evento de toque
+      onTouchStart={(e) => canMove && startMove(e)}
       onMouseUp={endMove}
-      onTouchEnd={endMove} // Evento de toque
+      onTouchEnd={endMove}
       style={{
         width: 50,
         height: 50,
@@ -74,8 +75,8 @@ const Square = () => {
         position: "absolute",
         left: position.x,
         top: position.y,
-        cursor: "pointer",
-        touchAction: "none", // Impede a rolagem ao tocar no quadrado
+        cursor: canMove ? "pointer" : "not-allowed",
+        touchAction: "none",
       }}
     />
   );
