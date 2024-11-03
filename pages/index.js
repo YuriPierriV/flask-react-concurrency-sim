@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000"); // URL do backend Flask
+const socket = io(process.env.REACT_APP_BACKEND_URL || "http://localhost:5000");
+
 
 const Square = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
