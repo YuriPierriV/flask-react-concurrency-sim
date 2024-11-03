@@ -46,10 +46,25 @@ const Square = () => {
     setIsMoving(false);
   };
 
+  // Adiciona e remove ouvintes de evento para o movimento do mouse
+  useEffect(() => {
+    if (isMoving) {
+      // Adiciona o ouvinte de movimento do mouse no documento
+      window.addEventListener("mousemove", moveSquare);
+    } else {
+      // Remove o ouvinte quando não estiver mais movendo
+      window.removeEventListener("mousemove", moveSquare);
+    }
+
+    // Limpeza ao desmontar
+    return () => {
+      window.removeEventListener("mousemove", moveSquare);
+    };
+  }, [isMoving]); // Dependência para verificar se está se movendo
+
   return (
     <div
       onMouseDown={startMove}
-      onMouseMove={moveSquare}
       onMouseUp={endMove}
       style={{
         width: 50,
