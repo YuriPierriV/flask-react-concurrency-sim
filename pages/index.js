@@ -75,7 +75,7 @@ const Square = () => {
         position: "absolute",
         left: position.x,
         top: position.y,
-        cursor: canMove ? "pointer" : "not-allowed",
+        cursor: "pointer",
         touchAction: "none",
       }}
     />
