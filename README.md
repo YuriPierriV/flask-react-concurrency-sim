@@ -1,31 +1,58 @@
-# FlaskReactConcurrency
+# Flask React Concurrency Sim
 
-Este é o projeto **FlaskReactConcurrency**, desenvolvido para simular um ambiente de concorrência visual onde múltiplos usuários podem visualizar e interagir com o movimento de um quadrado em tempo real. O backend é implementado em Flask, com comunicação via WebSocket, e o frontend é desenvolvido em React, proporcionando uma interface interativa.
+Projeto desenvolvido para simular cenários de concorrência usando Flask no backend e React no frontend. Este projeto inclui uma API em Flask que se comunica com um frontend em React. O projeto utiliza Docker para containerização, facilitando o setup e a execução em qualquer ambiente.
 
-## Descrição do Projeto
+## Estrutura do Projeto
 
-O objetivo deste projeto é aplicar conceitos de concorrência em uma aplicação visual, onde apenas um usuário pode mover o quadrado na tela por vez, enquanto os demais observam o movimento em tempo real. Esse controle é gerenciado com travas e semáforos no backend para garantir que apenas um usuário por vez manipule o quadrado.
+- **Frontend**: Next.js e React, com suporte a WebSockets (via Socket.IO).
+- **Backend**: Flask, com suporte a WebSockets (via Flask-SocketIO) e configuração para comunicação CORS.
+- **Containerização**: Docker configurado para fácil deploy e gerenciamento de serviços.
 
 ## Pré-requisitos
 
-Certifique-se de ter as seguintes ferramentas instaladas:
-
-- [Git](https://git-scm.com/)
-- [Docker](https://www.docker.com/)
+- **Docker** e **Docker Compose** instalados para execução via container.
+- **Node.js** e **npm** para desenvolvimento e testes do frontend (caso necessário).
+- **Python 3.8+** caso queira executar o backend fora do container.
 
 ## Instalação
 
-### 1. Clone o repositório
+### 1. Clonar o repositório
+```bash
+git clone https://github.com/seuusuario/flask-react-concurrency-sim.git
+cd flask-react-concurrency-sim
+```
 
-Primeiro, clone o repositório para a sua máquina local:
+### 2. Instale as dependências
+
+Em seguida, instale as dependências do projeto com o npm:
 
 ```bash
-git clone https://github.com/YuriPierriV/flask-react-concurrency.git
-cd flask-react-concurrency
+npm install
+```
+### 3. Suba os serviços do Docker
 
-Autores
+O projeto depende de alguns serviços que são configurados e gerenciados via Docker. Para iniciar os serviços, execute:
+
+```bash
+npm run services:build
+```
+
+### 4. Execute o projeto em modo de desenvolvimento
+
+Agora, para iniciar o servidor de desenvolvimento do Next.js, execute o comando:
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em http://localhost:3000.
+
+Para acessar a versão de produção, você também pode visitar o seguinte link: https://flask-react-concurrency-sim.vercel.app/
+
+
+## Autores
 
 Este projeto foi desenvolvido por:
 
-    Yuri Pierri - GitHub
-    Ednardo Luz - GitHub
+- **Yuri Pierri** - [GitHub](https://github.com/YuriPierriV)
+- **Ednardo Luz** - [GitHub](https://github.com/EdLuz111)
