@@ -68,8 +68,8 @@ const Square = () => {
     <div
       onMouseDown={(e) => canMove && startMove(e)}
       onTouchStart={(e) => canMove && startMove(e)}
-      onMouseUp={endMove}
-      onTouchEnd={endMove}
+      onMouseUp={(e) => canMove && endMove}
+      onTouchEnd={(e) => canMove && endMove}
       style={{
         width: 50,
         height: 50,
