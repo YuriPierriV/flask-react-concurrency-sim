@@ -18,6 +18,7 @@ const Square = () => {
         const adjustedY = (data.y / 100) * window.innerHeight - 25;
         setPosition({ x: adjustedX, y: adjustedY });
       }
+      setCanMove(!data.in_use);
     });
 
     return () => {
