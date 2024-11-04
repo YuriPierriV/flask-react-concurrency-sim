@@ -12,16 +12,18 @@ const Square = () => {
     // Recebe atualização de posição inicial e status de outros usuários
     socket.on("update_square", (data) => {
       // Converte porcentagem para pixels com base no tamanho atual da tela
-      const adjustedX = (data.x / 100) * window.innerWidth - 25;
-      const adjustedY = (data.y / 100) * window.innerHeight - 25;
-      setPosition({ x: adjustedX, y: adjustedY });
-      setCanMove(!data.in_use);
+      if (!isMoving) {
+        // Evita sobrescrever a posição local enquanto o movimento ocorre
+        const adjustedX = (data.x / 100) * window.innerWidth - 25;
+        const adjustedY = (data.y / 100) * window.innerHeight - 25;
+        setPosition({ x: adjustedX, y: adjustedY });
+      }
     });
 
     return () => {
       socket.off("update_square");
     };
-  }, []);
+  }, [isMoving]);
 
   const startMove = () => {
     socket.emit("start_move");
